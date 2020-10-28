@@ -1,0 +1,11 @@
+{
+  "name": "typescript-code-generator",
+  "version": "0.0.1",
+  "description": "A typescript code generation framework borrowing heavily from javapoet",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {}
+}
