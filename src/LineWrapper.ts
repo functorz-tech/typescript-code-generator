@@ -11,7 +11,7 @@ export default class LineWrapper {
   private buffer: string[] = [];
   private column: number = 0;
   private indentLevel: number = -1;
-  private nextFlush: FlushType;
+  private nextFlush: FlushType = null;
 
   constructor(out: StringBuilder, indent: string, columnLimit: bigint) {
     if (!out) {
@@ -77,9 +77,29 @@ export default class LineWrapper {
   private flush(flushType: FlushType) {
     switch (flushType) {
       case 'wrap': {
-
+        this.out.append('\n');
+        for (let i = 0; i < this.indentLevel; i++) {
+          this.out.append(this.indent);
+        }
+        this.column = this.indentLevel * this.indent.length;
+        this.column += this.buffer.map(s => s.length).reduce((a, b) => a + b, 0);
+        break;
       }
+      case 'space': {
+        this.out.append(' ');
+        break;
+      }
+      case 'empty': {
+        break;
+      }
+      default: 
+        throw new Error('Unknown FlushType:' + flushType);
     }
+
+    this.out.append(this.buffer.join(''));
+    this.buffer = [];
+    this.indentLevel = -1;
+    this.nextFlush = null;
   }
 }
 
